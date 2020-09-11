@@ -15,7 +15,7 @@ export default class Hotp {
   }
 
   private static padded16StrToUint8Array(padded16: string): Uint8Array {
-    const sa = padded16.match(/\d{2}/g);
+    const sa = padded16.match(/[\da-fA-F]{2}/g);
     if(sa == null) {
       throw new RuntimeError();
     }
@@ -24,7 +24,8 @@ export default class Hotp {
   }
 
   private static numberToUint8Array(num: number): Uint8Array {
-    return Hotp.padded16StrToUint8Array(Hotp.padded16Str(num));
+    const padded16 = Hotp.padded16Str(num);
+    return Hotp.padded16StrToUint8Array(padded16);
   }
 
   private hmacSha1(counter: number): Uint8Array {
